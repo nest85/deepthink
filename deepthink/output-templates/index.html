@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeepThink · 分析报告</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-soft: #fafafa;
+    --bg-tint: #f5f4f0;
+    --fg: #18181b;
+    --fg-soft: #3f3f46;
+    --fg-mid: #71717a;
+    --fg-muted: #a1a1aa;
+    --border: #ececec;
+    --border-soft: #f4f4f5;
+    --accent: #4f46c4;
+    --accent-soft: #f0eeff;
+    --warn: #b45309;
+    --good: #15803d;
+    --mid: #d4a017;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "HarmonyOS Sans SC",
+            "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", Roboto,
+            "Helvetica Neue", sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  main {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 64px 28px 120px;
+  }
+
+  /* ========== HERO ========== */
+  .hero {
+    margin-bottom: 56px;
+  }
+  .brand {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-size: 42px;
+    line-height: 1.2;
+    margin: 0 0 16px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+  .subtitle {
+    font-size: 16px;
+    color: var(--fg-mid);
+    margin: 0 0 24px;
+    max-width: 600px;
+  }
+  .stats {
+    display: flex;
+    gap: 32px;
+    padding: 20px 24px;
+    background: var(--bg-tint);
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--fg-soft);
+    flex-wrap: wrap;
+  }
+  .stat .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--fg-muted);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .stat .value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--fg);
+    font-family: var(--mono);
+  }
+
+  /* ========== GRID ========== */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  /* ========== CARD ========== */
+  .card {
+    display: block;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px 24px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+  }
+  .card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px -8px rgba(79, 70, 196, 0.15);
+  }
+  .card-title {
+    font-size: 17px;
+    line-height: 1.4;
+    font-weight: 700;
+    color: var(--fg);
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+  }
+  .card-question {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--fg-mid);
+    margin: 0 0 18px;
+    /* Truncate to 2 lines */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 44px;
+  }
+  .card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border-soft);
+    font-size: 12.5px;
+    color: var(--fg-muted);
+  }
+  .card-date {
+    font-family: var(--mono);
+  }
+  .card-confidence {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card-confidence .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--good);
+  }
+  .card-confidence .dot.mid { background: var(--mid); }
+  .card-confidence .dot.low { background: var(--warn); }
+  .card-confidence .pct {
+    font-family: var(--mono);
+    font-weight: 600;
+    color: var(--fg-soft);
+  }
+
+  /* ========== EMPTY STATE ========== */
+  .empty {
+    text-align: center;
+    padding: 80px 24px;
+    background: var(--bg-soft);
+    border-radius: 12px;
+    color: var(--fg-mid);
+  }
+  .empty .icon {
+    font-size: 40px;
+    margin-bottom: 16px;
+    opacity: 0.4;
+  }
+  .empty h2 {
+    font-size: 18px;
+    color: var(--fg-soft);
+    margin: 0 0 8px;
+    font-weight: 600;
+  }
+  .empty p {
+    font-size: 14px;
+    margin: 0;
+  }
+
+  /* ========== FOOTER ========== */
+  footer {
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    color: var(--fg-muted);
+    font-size: 12.5px;
+    text-align: center;
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 720px) {
+    main { padding: 40px 20px 80px; }
+    h1 { font-size: 30px; }
+    .grid { grid-template-columns: 1fr; }
+    .stats { gap: 20px; padding: 16px 20px; }
+    .stat .value { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<main>
+
+  <header class="hero">
+    <div class="brand">DeepThink</div>
+    <h1>分析报告</h1>
+    <p class="subtitle">通过多种方法论独立分析问题,综合得出洞察与建议。</p>
+
+    <div class="stats">
+      <div class="stat">
+        <span class="label">总报告数</span>
+        <span class="value">{{TOTAL_COUNT}}</span>
+      </div>
+      <div class="stat">
+        <span class="label">最近更新</span>
+        <span class="value">{{LAST_UPDATED}}</span>
+      </div>
+    </div>
+  </header>
+
+  {{CONTENT}}
+
+  <footer>DeepThink · 通过多视角发现真相</footer>
+
+</main>
+
+</body>
+</html>
