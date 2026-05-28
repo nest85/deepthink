@@ -30,5 +30,5 @@ build/
 .env.local
 
 # Build outputs
-*.html
-output/
+.omc/
+.claude/

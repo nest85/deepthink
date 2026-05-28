@@ -589,6 +589,7 @@
       <div class="row"><span class="key">分析问题</span><span class="val">{{ORIGINAL_QUESTION}}</span></div>
       <div class="row"><span class="key">生成日期</span><span class="val">{{DATE}}</span></div>
       <div class="row"><span class="key">使用方法论</span><span class="val">{{METHODOLOGIES_LIST}}</span></div>
+      <div class="row"><span class="key">使用模型</span><span class="val">{{MODEL_NAME}}(知识截至 {{MODEL_CUTOFF}})</span></div>
     </div>
   </header>
 
@@ -622,6 +623,7 @@
     <p>· 中间各章是<strong>每个方法论的独立分析</strong>,可单独阅读</p>
     <p>· 最核心的是<strong>"综合"章</strong>,特别注意<strong>分歧结论</strong>——那里藏着真正的不确定性</p>
     <p>· 行动建议是<strong>可执行</strong>的,不是抽象方向</p>
+    <p style="margin-top:10px;font-size:13px;color:var(--fg-muted);">注:事实来源标签中,知识截止日期为模型自报,仅供参考,不一定精确。</p>
   </div>
 
   <!-- ============ PROBLEM DEFINITION ============ -->
@@ -667,7 +669,7 @@
           <!-- {{METHODOLOGY_1_FACTS}} -->
           <!-- 示例行:
           <tr><td>具体事实</td><td><span class="src-mark src-search">[搜索]</span> 出处简述</td></tr>
-          <tr><td>具体事实</td><td><span class="src-mark src-training">[训练:截至 2025-12]</span></td></tr>
+          <tr><td>具体事实</td><td><span class="src-mark src-training">[训练]</span></td></tr>
           <tr><td>具体事实</td><td><span class="src-mark src-infer">[推断]</span></td></tr>
           -->
         </tbody>
