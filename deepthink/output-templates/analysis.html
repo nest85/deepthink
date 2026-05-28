@@ -248,6 +248,41 @@
     color: var(--fg);
   }
 
+  /* ============== SOURCE MARKS (来源标签) ============== */
+  .src-mark {
+    display: inline-block;
+    font-size: 11px;
+    padding: 1px 7px;
+    margin: 0 3px;
+    border-radius: 3px;
+    font-family: var(--mono);
+    font-weight: 500;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  .src-search { background: var(--good-soft); color: var(--good); }
+  .src-training { background: var(--bg-tint); color: var(--fg-mid); }
+  .src-infer { background: var(--warn-soft); color: var(--warn); }
+
+  /* ============== FACT LIST (本节事实清单) ============== */
+  .fact-list {
+    background: var(--bg-soft);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin: 28px 0 0;
+  }
+  .fact-list .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--fg-muted);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .fact-list table { margin: 0; font-size: 13.5px; }
+  .fact-list th { padding-top: 0; }
+  .fact-list td { padding: 8px 14px 8px 0; }
+
   /* ============== METHODOLOGY (editorial numbered) ============== */
   .methodology {
     margin: 80px 0;
@@ -624,6 +659,20 @@
     </div>
     <div class="method-intro">{{METHODOLOGY_1_BRIEF}}</div>
     {{METHODOLOGY_1_CONTENT}}
+    <div class="fact-list">
+      <div class="label">本节事实清单</div>
+      <table>
+        <thead><tr><th>事实</th><th>来源</th></tr></thead>
+        <tbody>
+          <!-- {{METHODOLOGY_1_FACTS}} -->
+          <!-- 示例行:
+          <tr><td>具体事实</td><td><span class="src-mark src-search">[搜索]</span> 出处简述</td></tr>
+          <tr><td>具体事实</td><td><span class="src-mark src-training">[训练:截至 2025-12]</span></td></tr>
+          <tr><td>具体事实</td><td><span class="src-mark src-infer">[推断]</span></td></tr>
+          -->
+        </tbody>
+      </table>
+    </div>
   </section>
 
   <section class="methodology" id="method-2">
@@ -633,6 +682,15 @@
     </div>
     <div class="method-intro">{{METHODOLOGY_2_BRIEF}}</div>
     {{METHODOLOGY_2_CONTENT}}
+    <div class="fact-list">
+      <div class="label">本节事实清单</div>
+      <table>
+        <thead><tr><th>事实</th><th>来源</th></tr></thead>
+        <tbody>
+          <!-- {{METHODOLOGY_2_FACTS}} -->
+        </tbody>
+      </table>
+    </div>
   </section>
 
   <!-- ...继续每个方法论 -->
@@ -717,7 +775,14 @@
     <ul>
       <li><strong>收敛性</strong>:{{CONVERGENCE_NOTE}}</li>
       <li><strong>分歧程度</strong>:{{DIVERGENCE_NOTE}}</li>
-      <li><strong>信息完整度</strong>:{{INFORMATION_NOTE}}</li>
+      <li><strong>信息完整度</strong>:
+        <ul>
+          <li><span class="src-mark src-search">[搜索]</span> 得到:{{FACTS_SEARCHED_COUNT}} 项</li>
+          <li><span class="src-mark src-training">[训练]</span> 来自:{{FACTS_TRAINING_COUNT}} 项</li>
+          <li><span class="src-mark src-infer">[推断]</span> 纯推断:{{FACTS_INFERRED_COUNT}} 项</li>
+          <li><strong>关键但只靠推断</strong>:{{KEY_INFERRED_NOTES}}</li>
+        </ul>
+      </li>
     </ul>
 
     <h4>需要更多信息才能提升置信度的地方</h4>
@@ -729,7 +794,7 @@
 
   <!-- ============ FOOTER ============ -->
   <footer class="doc-footer">
-    methodology-meta · 综合多种方法论的独立视角
+    DeepThink · 综合多种方法论的独立视角
   </footer>
 
 </main>

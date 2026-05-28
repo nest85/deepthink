@@ -29,7 +29,7 @@ deepthink/
 │       ├── analysis.html       ← 报告 HTML 模板
 │       ├── index.html          ← 索引页模板
 │       └── build-index.py      ← 索引重建脚本
-└── sample-outputs/             ← 样例输出
+└── docs/             ← 样例输出
     ├── index.html              ← 索引页样例
     └── 中国占星师职业增长分析.html ← 完整分析样例
 ```
