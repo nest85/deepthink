@@ -264,6 +264,18 @@
   .src-training { background: var(--bg-tint); color: var(--fg-mid); }
   .src-infer { background: var(--warn-soft); color: var(--warn); }
 
+  /* 绿色来源超链接(正文里搜索来源 + 事实清单链接) */
+  a.src-link {
+    color: var(--good);
+    text-decoration: none;
+    border-bottom: 1px solid var(--good-soft);
+    transition: border-color 0.15s;
+    font-weight: 500;
+  }
+  a.src-link:hover {
+    border-bottom-color: var(--good);
+  }
+
   /* ============== FACT LIST (本节事实清单) ============== */
   .fact-list {
     background: var(--bg-soft);
@@ -583,7 +595,7 @@
 
   <!-- ============ HEADER ============ -->
   <header class="doc-header">
-    <div class="eyebrow">分析报告</div>
+    <div class="eyebrow">DeepThink 分析报告</div>
     <h1>{{TITLE}}</h1>
     <div class="doc-meta">
       <div class="row"><span class="key">分析问题</span><span class="val">{{ORIGINAL_QUESTION}}</span></div>
@@ -668,9 +680,9 @@
         <tbody>
           <!-- {{METHODOLOGY_1_FACTS}} -->
           <!-- 示例行:
-          <tr><td>具体事实</td><td><span class="src-mark src-search">[搜索]</span> 出处简述</td></tr>
-          <tr><td>具体事实</td><td><span class="src-mark src-training">[训练]</span></td></tr>
-          <tr><td>具体事实</td><td><span class="src-mark src-infer">[推断]</span></td></tr>
+          <tr><td>具体事实</td><td><a class="src-link" href="https://..." target="_blank" rel="noopener">[知乎:占星消费调查]</a></td></tr>
+          <tr><td>具体事实</td><td><span class="src-mark src-training">[AI记忆]</span></td></tr>
+          <tr><td>具体事实</td><td><span class="src-mark src-infer">[AI推断]</span></td></tr>
           -->
         </tbody>
       </table>
@@ -779,10 +791,10 @@
       <li><strong>分歧程度</strong>:{{DIVERGENCE_NOTE}}</li>
       <li><strong>信息完整度</strong>:
         <ul>
-          <li><span class="src-mark src-search">[搜索]</span> 得到:{{FACTS_SEARCHED_COUNT}} 项</li>
-          <li><span class="src-mark src-training">[训练]</span> 来自:{{FACTS_TRAINING_COUNT}} 项</li>
-          <li><span class="src-mark src-infer">[推断]</span> 纯推断:{{FACTS_INFERRED_COUNT}} 项</li>
-          <li><strong>关键但只靠推断</strong>:{{KEY_INFERRED_NOTES}}</li>
+          <li><span class="src-mark src-search">[网络搜索]</span> 得到:{{FACTS_SEARCHED_COUNT}} 项</li>
+          <li><span class="src-mark src-training">[AI记忆]</span> 来自:{{FACTS_TRAINING_COUNT}} 项</li>
+          <li><span class="src-mark src-infer">[AI推断]</span> 纯推断:{{FACTS_INFERRED_COUNT}} 项</li>
+          <li><strong>关键但只靠 AI 推断</strong>:{{KEY_INFERRED_NOTES}}</li>
         </ul>
       </li>
     </ul>
