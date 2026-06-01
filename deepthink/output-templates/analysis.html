@@ -6,41 +6,56 @@
 <title>{{TITLE}}</title>
 <style>
   :root {
-    --bg: #ffffff;
-    --bg-soft: #fafafa;
-    --bg-tint: #f5f4f0;
-    --fg: #18181b;
-    --fg-soft: #3f3f46;
-    --fg-mid: #71717a;
-    --fg-muted: #a1a1aa;
-    --border: #ececec;
-    --border-soft: #f4f4f5;
-    --accent: #4f46c4;
-    --accent-soft: #f0eeff;
-    --warn: #b45309;
-    --warn-soft: #fef6e4;
-    --good: #15803d;
-    --good-soft: #ecfdf3;
-    --user: #1d4ed8;
-    --user-soft: #dbeafe;
+    /* 纸张色系 */
+    --bg: #fbfbf8;
+    --paper: #ffffff;
+    --paper-tint: #f7f6f0;
+    --line: #deded6;
+    --line-soft: #ecebe4;
+
+    /* 墨色 */
+    --ink: #161616;
+    --ink-soft: #303030;
+    --ink-mid: #656565;
+    --ink-muted: #9a9a93;
+
+    /* 主色 + 强调色 */
+    --green: #1f6f54;
+    --green-soft: #eef4ef;
+    --green-deep: #18352a;
+    --blue: #275f8f;
+    --blue-soft: #e8eff5;
+    --amber: #9a5a12;
+    --amber-soft: #f7f4ed;
+    --gray-soft: #f0efe9;
+
+    /* 阴影 */
+    --shadow: 0 18px 55px rgba(25, 30, 28, 0.08);
+    --shadow-soft: 0 8px 32px rgba(25, 30, 28, 0.04);
+
     --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-    --serif: "Source Han Serif SC", "Songti SC", "STSong", serif;
     --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "HarmonyOS Sans SC",
             "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", Roboto,
             "Helvetica Neue", sans-serif;
   }
 
   * { box-sizing: border-box; }
-
   html { scroll-behavior: smooth; }
-  
+
+  /* 锚点跳转时,目标顶部距视窗顶部留出 32px,与右侧目录卡上沿对齐 */
+  :target,
+  section[id],
+  header[id] {
+    scroll-margin-top: 32px;
+  }
+
   body {
     margin: 0;
     background: var(--bg);
-    color: var(--fg);
+    color: var(--ink);
     font-family: var(--sans);
     font-size: 16px;
-    line-height: 1.8;
+    line-height: 1.78;
     font-feature-settings: "kern" 1, "liga" 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -48,288 +63,364 @@
   }
 
   main {
-    max-width: 720px;
+    max-width: 980px;
     margin: 0 auto;
-    padding: 80px 28px 160px;
+    padding: 32px 24px 96px;
   }
 
-  /* ============== HEADER ============== */
-  .doc-header {
-    margin-bottom: 56px;
+  /* ============ 通用排版 ============ */
+  h1 {
+    margin: 0 0 18px;
+    font-size: 38px;
+    line-height: 1.22;
+    font-weight: 780;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+  h2 {
+    margin: 0 0 18px;
+    font-size: 26px;
+    line-height: 1.35;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  h3 {
+    margin: 28px 0 10px;
+    font-size: 19px;
+    line-height: 1.45;
+    font-weight: 650;
+    color: var(--ink);
+  }
+  h4 {
+    margin: 22px 0 8px;
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 650;
+    color: var(--ink-soft);
+  }
+  p { margin: 10px 0; color: var(--ink-soft); }
+  ul, ol { margin: 10px 0; padding-left: 22px; color: var(--ink-soft); }
+  li { margin: 7px 0; }
+  strong { color: var(--ink); font-weight: 650; }
+  em { color: var(--ink-soft); font-style: italic; }
+
+  a {
+    color: var(--blue);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(39, 95, 143, .28);
+    transition: border-color 0.15s;
+  }
+  a:hover { border-bottom-color: var(--blue); }
+
+  code {
+    background: var(--paper-tint);
+    padding: 1.5px 6px;
+    border-radius: 4px;
+    font-family: var(--mono);
+    font-size: 13.5px;
+    color: var(--ink);
+  }
+
+  pre {
+    background: var(--paper-tint);
+    padding: 18px 22px;
+    border-radius: 6px;
+    border: 1px solid var(--line-soft);
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: auto;
+    color: var(--ink-soft);
+  }
+
+  blockquote {
+    border-left: 2px solid var(--line);
+    margin: 16px 0;
+    padding: 2px 0 2px 16px;
+    color: var(--ink-mid);
+    font-style: italic;
+    font-size: 14.5px;
+  }
+
+  /* ============ 头部纸张 ============ */
+  header.doc-header {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 44px 46px;
+    box-shadow: var(--shadow);
   }
   .eyebrow {
-    font-size: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .eyebrow a {
+    color: var(--green);
+    border-bottom: none;
+    transition: opacity 0.15s;
+  }
+  .eyebrow a:hover { opacity: 0.7; }
+
+  /* ============ 上下文卡(分析问题 / 用户画像) ============ */
+  .context-card {
+    margin-top: 24px;
+    padding: 18px 22px;
+    background: var(--amber-soft);
+    border-left: 3px solid var(--amber);
+    border-radius: 6px;
+  }
+  .context-item + .context-item {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(154, 90, 18, 0.18);
+  }
+  .context-label {
+    font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    color: var(--fg-muted);
-    font-weight: 600;
-    margin-bottom: 16px;
-  }
-  h1 {
-    font-size: 36px;
-    line-height: 1.25;
-    margin: 0 0 24px;
+    color: var(--amber);
     font-weight: 700;
-    letter-spacing: -0.025em;
-    color: var(--fg);
+    margin-bottom: 4px;
   }
-  .doc-meta {
-    font-size: 13.5px;
-    color: var(--fg-mid);
-    line-height: 1.7;
-  }
-  .doc-meta .row {
-    display: flex;
-    gap: 8px;
-    margin: 4px 0;
-  }
-  .doc-meta .key {
-    color: var(--fg-muted);
-    min-width: 80px;
-    flex-shrink: 0;
-  }
-  .doc-meta .val {
-    color: var(--fg-soft);
+  .context-line {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #3e3124;
+    font-weight: 600;
   }
 
-  /* ============== TL;DR CARD ============== */
+  /* ============ TL;DR 核心结论 ============ */
   .tldr {
-    background: var(--bg-tint);
-    border-radius: 12px;
-    padding: 28px 32px;
-    margin: 0 0 48px;
-    position: relative;
+    margin-top: 24px;
+    padding: 22px 26px;
+    background: var(--green-soft);
+    border-left: 4px solid var(--green);
+    border-radius: 6px;
   }
   .tldr-label {
     font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 0.16em;
-    color: var(--fg-muted);
+    letter-spacing: 0.14em;
+    color: var(--green);
     font-weight: 700;
-    margin-bottom: 14px;
+    margin-bottom: 6px;
   }
+  .tldr-item { padding-bottom: 0; }
   .tldr-text {
-    font-size: 18px;
-    line-height: 1.65;
-    color: var(--fg);
-    margin: 0 0 20px;
-    font-weight: 500;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--green-deep);
+    margin: 0 0 16px;
+    font-weight: 600;
   }
   .tldr-confidence {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding-top: 18px;
-    border-top: 1px solid rgba(0,0,0,0.06);
+    gap: 10px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(31, 111, 84, 0.18);
     font-size: 13px;
-    color: var(--fg-mid);
+    color: var(--ink-mid);
   }
   .tldr-confidence .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--good);
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--green);
   }
-  .tldr-confidence .dot.mid { background: #d4a017; }
-  .tldr-confidence .dot.low { background: var(--warn); }
+  .tldr-confidence .dot.mid { background: #c08a1a; }
+  .tldr-confidence .dot.low { background: var(--amber); }
   .tldr-confidence .pct {
     font-weight: 700;
-    color: var(--fg);
+    color: var(--ink);
     font-size: 14px;
   }
 
-  /* ============== TOC ============== */
-  .toc {
-    margin: 0 0 56px;
-    padding: 0;
-    border-left: 2px solid var(--border);
-    padding-left: 20px;
+  /* ============ 头部底部元信息 ============ */
+  .doc-meta {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    color: var(--ink-mid);
+    font-size: 14px;
+    margin-top: 24px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line-soft);
   }
-  .toc-label {
+  .doc-meta .row { display: flex; gap: 6px; }
+  .doc-meta .key {
+    color: var(--ink-muted);
+    flex-shrink: 0;
+    min-width: 70px;
+  }
+  .doc-meta .val { color: var(--ink-soft); font-weight: 500; }
+
+  /* ============ section 通用纸张卡 ============ */
+  section {
+    margin-top: 32px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 36px 40px;
+    box-shadow: var(--shadow-soft);
+  }
+
+  /* ============ 目录(右侧浮动 fixed) ============ */
+  .toc-side {
+    position: fixed;
+    top: 32px;
+    right: 32px;
+    width: 210px;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+    padding: 20px 18px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: var(--shadow-soft);
+    font-size: 13px;
+    z-index: 10;
+  }
+  .toc-side .toc-label {
     font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 0.16em;
-    color: var(--fg-muted);
+    letter-spacing: 0.14em;
+    color: var(--ink-muted);
     font-weight: 700;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
-  .toc ol {
+  .toc-side ol {
     list-style: none;
     padding: 0;
     margin: 0;
     counter-reset: toc;
   }
-  .toc li {
+  .toc-side li {
     counter-increment: toc;
-    margin: 6px 0;
-    font-size: 14px;
+    margin: 0;
+    padding: 0;
   }
-  .toc li::before {
+  .toc-side li::before {
     content: counter(toc, decimal-leading-zero);
-    color: var(--fg-muted);
+    color: var(--ink-muted);
     font-family: var(--mono);
     font-size: 11px;
-    margin-right: 10px;
+    margin-right: 8px;
     font-weight: 500;
   }
-  .toc a {
-    color: var(--fg-soft);
-    text-decoration: none;
-    border-bottom: 1px solid transparent;
-    transition: color 0.15s, border-color 0.15s;
+  .toc-side a {
+    display: inline-block;
+    padding: 7px 0;
+    color: var(--ink-soft);
+    border-bottom: none;
+    transition: color 0.15s;
+    line-height: 1.4;
   }
-  .toc a:hover {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-  }
+  .toc-side a:hover { color: var(--green); }
 
-  /* ============== HOW TO READ ============== */
-  .how-to-read {
-    background: var(--bg-soft);
-    border-radius: 8px;
-    padding: 20px 24px;
-    margin: 0 0 56px;
+  /* 隐藏旧的内联目录(桌面端) */
+  .toc-section { display: none; }
+
+  /* ============ "如何阅读" 米黄批注 ============ */
+  section.how-to-read {
+    margin-top: 24px;
+    background: var(--amber-soft);
+    border: none;
+    border-left: 3px solid var(--amber);
+    box-shadow: none;
+    padding: 18px 22px;
     font-size: 14px;
-    color: var(--fg-soft);
+    color: #3e3124;
     line-height: 1.7;
+    border-radius: 6px;
   }
-  .how-to-read p { margin: 4px 0; }
-  .how-to-read strong { color: var(--fg); }
+  .how-to-read p { margin: 4px 0; color: #3e3124; }
+  .how-to-read strong { color: #2a2014; }
   .how-to-read .title {
     font-weight: 700;
-    color: var(--fg);
+    color: #2a2014;
     margin-bottom: 8px;
+    font-size: 14px;
   }
 
-  /* ============== SECTIONS ============== */
-  section { margin: 64px 0; }
-
-  h2 {
-    font-size: 24px;
-    line-height: 1.35;
-    margin: 0 0 24px;
-    font-weight: 700;
-    letter-spacing: -0.015em;
-    color: var(--fg);
-  }
-  h3 {
-    font-size: 17px;
-    line-height: 1.45;
-    margin: 32px 0 12px;
-    font-weight: 600;
-    color: var(--fg);
-    letter-spacing: -0.005em;
-  }
-  h4 {
-    font-size: 15px;
-    line-height: 1.5;
-    margin: 24px 0 10px;
-    font-weight: 600;
-    color: var(--fg-soft);
-  }
-
-  p { margin: 12px 0; color: var(--fg-soft); }
-  ul, ol { padding-left: 22px; margin: 12px 0; color: var(--fg-soft); }
-  li { margin: 6px 0; }
-  strong { color: var(--fg); font-weight: 600; }
-  em { color: var(--fg-soft); font-style: italic; }
-  blockquote {
-    border-left: 2px solid var(--border);
-    margin: 16px 0;
-    padding: 2px 0 2px 16px;
-    color: var(--fg-mid);
-    font-style: italic;
-    font-size: 14.5px;
-  }
-  code {
-    background: var(--bg-soft);
-    padding: 1.5px 6px;
-    border-radius: 4px;
-    font-family: var(--mono);
-    font-size: 13.5px;
-    color: var(--fg);
-  }
-
-  /* ============== SOURCE MARKS (来源标签) ============== */
+  /* ============ 来源标签 ============ */
   .src-mark {
     display: inline-block;
     font-size: 11px;
-    padding: 1px 7px;
+    padding: 1.5px 7px;
     margin: 0 3px;
     border-radius: 3px;
     font-family: var(--mono);
     font-weight: 500;
     vertical-align: middle;
     white-space: nowrap;
+    border: 1px solid transparent;
   }
-  .src-search { background: var(--good-soft); color: var(--good); }
-  .src-training { background: var(--bg-tint); color: var(--fg-mid); }
-  .src-infer { background: var(--warn-soft); color: var(--warn); }
-  .src-user { background: var(--user-soft); color: var(--user); }
+  .src-search { background: var(--green-soft); color: var(--green); }
+  .src-training { background: var(--gray-soft); color: var(--ink-mid); }
+  .src-infer { background: var(--amber-soft); color: var(--amber); }
+  .src-user { background: var(--blue-soft); color: var(--blue); }
 
-  /* 绿色来源超链接(正文里搜索来源 + 事实清单链接) */
   a.src-link {
-    color: var(--good);
+    color: var(--green);
     text-decoration: none;
-    border-bottom: 1px solid var(--good-soft);
+    border-bottom: 1px solid rgba(31, 111, 84, 0.28);
     transition: border-color 0.15s;
     font-weight: 500;
   }
-  a.src-link:hover {
-    border-bottom-color: var(--good);
-  }
+  a.src-link:hover { border-bottom-color: var(--green); }
 
-  /* ============== FACT LIST (本节事实清单) ============== */
+  /* ============ 事实清单 ============ */
   .fact-list {
-    background: var(--bg-soft);
-    border-radius: 8px;
-    padding: 18px 22px;
-    margin: 28px 0 0;
+    margin: 32px 0 0;
+    padding-top: 22px;
+    border-top: 1px dashed var(--line);
   }
   .fact-list .label {
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    color: var(--fg-muted);
+    color: var(--ink-muted);
     font-weight: 700;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
-  .fact-list table { margin: 0; font-size: 13.5px; }
+  .fact-list table { margin: 8px 0 0; font-size: 13.5px; }
   .fact-list th { padding-top: 0; }
   .fact-list td { padding: 8px 14px 8px 0; }
 
-  /* ============== METHODOLOGY (editorial numbered) ============== */
-  .methodology {
-    margin: 80px 0;
+  /* ============ 方法论章节 ============ */
+  section.methodology {
+    border-top: 4px solid var(--green);
     padding-top: 32px;
-    border-top: 1px solid var(--border);
   }
   .methodology .method-head {
     display: flex;
     align-items: baseline;
-    gap: 20px;
-    margin-bottom: 16px;
+    gap: 18px;
+    margin-bottom: 14px;
   }
   .method-number {
     font-family: var(--mono);
     font-size: 13px;
-    color: var(--fg-muted);
+    color: var(--ink-muted);
     font-weight: 500;
     letter-spacing: 0.04em;
     flex-shrink: 0;
   }
-  .methodology h2 {
-    margin: 0;
-    flex: 1;
-  }
+  .methodology h2 { margin: 0; flex: 1; }
   .method-intro {
-    color: var(--fg-mid);
+    color: var(--ink-mid);
     font-size: 14.5px;
-    line-height: 1.65;
-    padding: 12px 16px;
-    background: var(--bg-soft);
-    border-radius: 6px;
-    margin: 0 0 28px;
+    line-height: 1.7;
+    padding: 14px 18px;
+    background: var(--bg);
+    border-left: 3px solid var(--line);
+    border-radius: 4px;
+    margin: 0 0 24px;
+    font-style: italic;
   }
   .method-intro::before {
     content: "方法论简介";
@@ -337,67 +428,60 @@
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    color: var(--accent);
+    color: var(--green);
     font-weight: 700;
-    margin-right: 8px;
+    margin-right: 10px;
     vertical-align: middle;
+    font-style: normal;
   }
 
-  /* ============== SYNTHESIS ============== */
-  .synthesis {
-    margin: 80px 0;
-    padding-top: 32px;
-    border-top: 1px solid var(--border);
-  }
+  /* ============ Synthesis ============ */
   .synthesis h2 {
     font-size: 30px;
     margin-bottom: 8px;
   }
   .synthesis .lead {
-    color: var(--fg-mid);
+    color: var(--ink-mid);
     font-size: 14.5px;
-    margin-bottom: 32px;
+    margin-bottom: 28px;
     font-style: italic;
   }
 
-  /* ---- convergence ---- */
+  /* 收敛 - 绿色批注 */
   .convergence {
-    background: var(--good-soft);
-    border-radius: 8px;
+    background: var(--green-soft);
+    border-left: 4px solid var(--green);
+    border-radius: 6px;
     padding: 18px 22px;
-    margin: 16px 0;
+    margin: 14px 0;
   }
   .convergence .conv-title {
-    font-weight: 600;
-    color: var(--fg);
+    font-weight: 650;
+    color: var(--green-deep);
     margin-bottom: 6px;
-    font-size: 15px;
+    font-size: 15.5px;
   }
   .convergence .support {
     font-size: 12.5px;
-    color: var(--good);
-    margin-top: 8px;
-    font-weight: 500;
+    color: var(--green);
+    margin-top: 10px;
+    font-weight: 600;
   }
   .convergence .support::before {
     content: "支持方法论 · ";
-    color: var(--fg-muted);
+    color: var(--ink-muted);
     font-weight: 400;
   }
-  .convergence p {
-    margin: 6px 0;
-    color: var(--fg-soft);
-    font-size: 14.5px;
-  }
+  .convergence p { margin: 6px 0; color: var(--ink-soft); font-size: 14.5px; }
 
-  /* ---- divergence (amber, not red) ---- */
+  /* 分歧 - 琥珀批注 */
   .divergence-banner {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: var(--warn-soft);
-    color: var(--warn);
-    padding: 4px 10px;
+    background: var(--amber-soft);
+    color: var(--amber);
+    padding: 3px 10px;
     font-size: 11px;
     font-weight: 700;
     border-radius: 4px;
@@ -407,93 +491,96 @@
     vertical-align: middle;
   }
   .divergence {
-    background: var(--warn-soft);
-    border-radius: 8px;
+    background: var(--amber-soft);
+    border-left: 4px solid var(--amber);
+    border-radius: 6px;
     padding: 22px 26px;
-    margin: 16px 0;
-    border-left: 3px solid var(--warn);
+    margin: 14px 0;
   }
   .divergence h4 {
-    color: var(--warn);
+    color: var(--amber);
     margin: 0 0 12px;
-    font-size: 15px;
+    font-size: 15.5px;
     font-weight: 700;
   }
-  .divergence .pair { margin: 8px 0; font-size: 14.5px; color: var(--fg-soft); }
-  .divergence .pair strong { color: var(--warn); }
+  .divergence .pair { margin: 8px 0; font-size: 14.5px; color: var(--ink-soft); }
+  .divergence .pair strong { color: var(--amber); }
   .divergence .meta-label {
     display: block;
     font-size: 10.5px;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    color: var(--warn);
+    color: var(--amber);
     font-weight: 700;
-    margin: 16px 0 4px;
+    margin: 14px 0 4px;
   }
-  .divergence p {
-    margin: 4px 0;
-    color: var(--fg-soft);
-    font-size: 14.5px;
-  }
+  .divergence p { margin: 4px 0; color: var(--ink-soft); font-size: 14.5px; }
 
-  /* ---- constraint ---- */
+  /* 主导约束 - 深墨绿(有 ◆ 符号区分) */
   .constraint {
-    background: var(--accent-soft);
-    border-radius: 8px;
+    background: var(--paper-tint);
+    border-left: 5px solid var(--green-deep);
+    border-radius: 6px;
     padding: 22px 26px;
-    margin: 16px 0;
+    margin: 14px 0;
+    position: relative;
   }
   .constraint .label {
     font-size: 10.5px;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    color: var(--accent);
+    color: var(--green-deep);
     font-weight: 700;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+  }
+  .constraint .label::before {
+    content: "◆ ";
+    margin-right: 4px;
   }
   .constraint .what {
-    font-size: 17px;
-    font-weight: 600;
-    color: var(--fg);
+    font-size: 18px;
+    font-weight: 650;
+    color: var(--ink);
     line-height: 1.5;
     margin-bottom: 14px;
   }
-  .constraint p { margin: 8px 0; font-size: 14.5px; color: var(--fg-soft); }
+  .constraint p { margin: 8px 0; font-size: 14.5px; color: var(--ink-soft); }
 
-  /* ---- actions ---- */
+  /* 行动建议 - 纸张小卡片 */
   .actions {
     display: grid;
     gap: 14px;
     margin: 16px 0;
   }
   .action-block {
-    background: var(--bg-soft);
-    padding: 18px 22px;
+    background: var(--paper);
+    padding: 20px 24px;
     border-radius: 8px;
+    border: 1px solid var(--line-soft);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .action-block:hover {
+    border-color: var(--green);
+    box-shadow: var(--shadow-soft);
   }
   .action-block .term {
     font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--accent);
+    letter-spacing: 0.12em;
+    color: var(--green);
     font-weight: 700;
     margin-bottom: 10px;
   }
-  .action-block ol {
+  .action-block ol, .action-block ul {
     margin: 0;
     padding-left: 20px;
-    color: var(--fg-soft);
+    color: var(--ink-soft);
     font-size: 14.5px;
   }
   .action-block li { margin: 6px 0; }
-  .action-block li::marker { color: var(--fg-muted); }
+  .action-block li::marker { color: var(--ink-muted); }
 
-  /* ============== CONFIDENCE ============== */
-  .confidence {
-    margin: 80px 0;
-    padding-top: 32px;
-    border-top: 1px solid var(--border);
-  }
+  /* ============ 置信度 ============ */
   .conf-display {
     display: flex;
     align-items: baseline;
@@ -502,46 +589,43 @@
   }
   .conf-percent {
     font-family: var(--mono);
-    font-size: 40px;
-    font-weight: 700;
-    color: var(--good);
+    font-size: 44px;
+    font-weight: 800;
+    color: var(--green);
     letter-spacing: -0.02em;
     line-height: 1;
   }
-  .conf-percent.mid { color: #d4a017; }
-  .conf-percent.low { color: var(--warn); }
-  .conf-label {
-    font-size: 15px;
-    color: var(--fg-mid);
-  }
+  .conf-percent.mid { color: #c08a1a; }
+  .conf-percent.low { color: var(--amber); }
+  .conf-label { font-size: 15px; color: var(--ink-mid); }
   .conf-bar {
     height: 4px;
-    background: var(--border-soft);
+    background: var(--line-soft);
     border-radius: 2px;
     overflow: hidden;
     margin-bottom: 28px;
   }
   .conf-bar-fill {
     height: 100%;
-    background: var(--good);
+    background: var(--green);
     transition: width 0.4s ease;
   }
-  .conf-bar-fill.mid { background: #d4a017; }
-  .conf-bar-fill.low { background: var(--warn); }
+  .conf-bar-fill.mid { background: #c08a1a; }
+  .conf-bar-fill.low { background: var(--amber); }
 
-  /* ============== TABLE ============== */
+  /* ============ 表格 ============ */
   table {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
+    margin: 18px 0;
     font-size: 14px;
   }
   th {
     text-align: left;
     padding: 12px 14px 12px 0;
-    border-bottom: 2px solid var(--border);
+    border-bottom: 1.5px solid var(--line);
     font-weight: 600;
-    color: var(--fg-mid);
+    color: var(--ink-mid);
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -549,46 +633,93 @@
   td {
     text-align: left;
     padding: 14px 14px 14px 0;
-    border-bottom: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--line-soft);
     vertical-align: top;
-    color: var(--fg-soft);
+    color: var(--ink-soft);
     line-height: 1.65;
   }
   tr:last-child td { border-bottom: none; }
 
-  /* ============== FOOTER ============== */
-  .doc-footer {
-    margin-top: 80px;
+  /* ============ 页脚 ============ */
+  footer.doc-footer {
+    margin-top: 40px;
     padding-top: 24px;
-    border-top: 1px solid var(--border);
-    color: var(--fg-muted);
-    font-size: 12.5px;
+    color: var(--ink-muted);
+    font-size: 13px;
     text-align: center;
   }
+  footer.doc-footer a {
+    color: var(--green);
+    border-bottom: none;
+    font-weight: 600;
+    transition: opacity 0.15s;
+  }
+  footer.doc-footer a:hover { opacity: 0.7; }
 
-  /* ============== PRINT ============== */
+  /* ============ 打印 ============ */
   @media print {
-    body { font-size: 12px; }
+    body { background: #fff; font-size: 12px; }
     main { padding: 0; max-width: none; }
-    .toc { display: none; }
-    .methodology, .synthesis, .confidence {
+    section, header.doc-header {
+      border: none;
+      box-shadow: none;
+      padding: 16px 0;
       page-break-inside: avoid;
     }
-    a { color: var(--fg); text-decoration: none; }
+    .toc-side, .toc-section { display: none; }
+    a { color: var(--ink); text-decoration: none; }
   }
 
-  /* ============== RESPONSIVE ============== */
-  @media (max-width: 640px) {
-    main { padding: 48px 20px 100px; }
-    h1 { font-size: 26px; }
-    h2 { font-size: 21px; }
+  /* ============ 响应式 ============ */
+  /* 窗口不够宽放下浮动目录时,改为内联 */
+  @media (max-width: 1280px) {
+    .toc-side { display: none; }
+    .toc-section { display: block; }
+    .toc-section .toc-inline {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 18px;
+      padding: 0;
+      list-style: none;
+      margin: 0;
+      counter-reset: toc;
+    }
+    .toc-section .toc-inline li {
+      counter-increment: toc;
+      margin: 0;
+      padding: 12px 14px;
+      background: var(--bg);
+      border: 1px solid var(--line-soft);
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .toc-section .toc-inline li::before {
+      content: counter(toc, decimal-leading-zero);
+      color: var(--ink-muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      margin-right: 10px;
+      font-weight: 500;
+    }
+    .toc-section .toc-inline a {
+      color: var(--ink-soft);
+      border-bottom: none;
+    }
+  }
+
+  @media (max-width: 760px) {
+    main { padding: 28px 14px 64px; }
+    header.doc-header { padding: 26px 22px; }
+    section { padding: 24px 22px; }
+    h1 { font-size: 28px; }
+    h2 { font-size: 22px; }
     .synthesis h2 { font-size: 24px; }
-    .tldr { padding: 20px 22px; }
-    .tldr-text { font-size: 16px; }
-    .conf-percent { font-size: 32px; }
-    .methodology, .synthesis, .confidence { padding-top: 24px; }
+    .doc-meta { grid-template-columns: 1fr; }
     .doc-meta .row { flex-direction: column; gap: 2px; }
     .doc-meta .key { min-width: 0; }
+    .tldr { padding: 18px 20px; }
+    .tldr-text { font-size: 16px; }
+    .conf-percent { font-size: 34px; }
   }
 </style>
 </head>
@@ -597,49 +728,61 @@
 <main>
 
   <!-- ============ HEADER ============ -->
-  <header class="doc-header">
-    <div class="eyebrow">DeepThink 分析报告</div>
+  <header class="doc-header" id="top">
+    <div class="eyebrow"><a href="https://github.com/nest85/deepthink" target="_blank" rel="noopener">DeepThink 分析报告</a></div>
     <h1>{{TITLE}}</h1>
+
+    <!-- 上下文卡(分析问题 + 用户画像;如无用户画像,渲染时整块只保留分析问题或省略) -->
+    <div class="context-card">
+      <div class="context-item">
+        <div class="context-label">分析问题</div>
+        <p class="context-line">{{ORIGINAL_QUESTION}}</p>
+      </div>
+      {{USER_CONTEXT}}
+    </div>
+
+    <!-- 核心结论 + 置信度 -->
+    <div class="tldr">
+      <div class="tldr-item">
+        <div class="tldr-label">核心结论</div>
+        <p class="tldr-text">{{ONE_LINER_CONCLUSION}}</p>
+      </div>
+      <div class="tldr-confidence">
+        <span class="dot"></span>
+        <span>置信度 <span class="pct">{{CONFIDENCE_PERCENT}}%</span></span>
+        <span>·</span>
+        <span>{{CONFIDENCE_LABEL}}</span>
+      </div>
+    </div>
+
     <div class="doc-meta">
-      <div class="row"><span class="key">分析问题</span><span class="val">{{ORIGINAL_QUESTION}}</span></div>
       <div class="row"><span class="key">生成日期</span><span class="val">{{DATE}}</span></div>
-      <div class="row"><span class="key">使用方法论</span><span class="val">{{METHODOLOGIES_LIST}}</span></div>
       <div class="row"><span class="key">使用模型</span><span class="val">{{MODEL_NAME}}(知识截至 {{MODEL_CUTOFF}})</span></div>
+      <div class="row"><span class="key">使用方法论</span><span class="val">{{METHODOLOGIES_LIST}}</span></div>
     </div>
   </header>
 
-  <!-- ============ TL;DR (一句话结论 + 置信度) ============ -->
-  <div class="tldr">
-    <div class="tldr-label">核心结论</div>
-    <p class="tldr-text">{{ONE_LINER_CONCLUSION}}</p>
-    <div class="tldr-confidence">
-      <span class="dot"></span>
-      <span>置信度 <span class="pct">{{CONFIDENCE_PERCENT}}%</span></span>
-      <span>·</span>
-      <span>{{CONFIDENCE_LABEL}}</span>
-    </div>
-  </div>
-
-  <!-- ============ TOC ============ -->
-  <nav class="toc">
-    <div class="toc-label">目录</div>
-    <ol>
+  <!-- ============ TOC(内联,移动端用) ============ -->
+  <section class="toc-section">
+    <h2>目录</h2>
+    <ol class="toc-inline">
+      <li><a href="#top">报告总览</a></li>
       <li><a href="#problem">问题定义</a></li>
       <!-- {{TOC_METHODOLOGY_ITEMS}} -->
-      <li><a href="#synthesis">综合</a></li>
+      <li><a href="#synthesis">综合（结论、建议）</a></li>
       <li><a href="#confidence">置信度评估</a></li>
     </ol>
-  </nav>
+  </section>
 
   <!-- ============ HOW TO READ ============ -->
-  <div class="how-to-read">
+  <section class="how-to-read">
     <div class="title">如何阅读本报告</div>
     <p>本报告通过 {{N}} 个方法论独立分析同一问题,然后综合。</p>
     <p>· 中间各章是<strong>每个方法论的独立分析</strong>,可单独阅读</p>
     <p>· 最核心的是<strong>"综合"章</strong>,特别注意<strong>分歧结论</strong>——那里藏着真正的不确定性</p>
     <p>· 行动建议是<strong>可执行</strong>的,不是抽象方向</p>
-    <p style="margin-top:10px;font-size:13px;color:var(--fg-muted);">注:事实来源标签中,知识截止日期为模型自报,仅供参考,不一定精确。</p>
-  </div>
+    <p style="margin-top:10px;font-size:12.5px;color:#7a6a4a;">注:事实来源标签中,知识截止日期为模型自报,仅供参考,不一定精确。</p>
+  </section>
 
   <!-- ============ PROBLEM DEFINITION ============ -->
   <section id="problem">
@@ -715,7 +858,7 @@
 
   <!-- ============ SYNTHESIS ============ -->
   <section class="synthesis" id="synthesis">
-    <h2>综合</h2>
+    <h2>综合（结论、建议）</h2>
     <p class="lead">前面是各方法论的独立视角,这里把它们综合起来。</p>
 
     <!-- 收敛结论 -->
@@ -813,10 +956,22 @@
 
   <!-- ============ FOOTER ============ -->
   <footer class="doc-footer">
-    DeepThink · 综合多种方法论的独立视角
+    <a href="https://github.com/nest85/deepthink" target="_blank" rel="noopener">DeepThink</a> · 综合多种方法论的独立视角
   </footer>
 
 </main>
+
+<!-- ============ 侧边目录(浮动,桌面端 >1280px) ============ -->
+<aside class="toc-side">
+  <div class="toc-label">目录</div>
+  <ol>
+    <li><a href="#top">报告总览</a></li>
+    <li><a href="#problem">问题定义</a></li>
+    <!-- {{TOC_METHODOLOGY_ITEMS}} -->
+    <li><a href="#synthesis">综合（结论、建议）</a></li>
+    <li><a href="#confidence">置信度评估</a></li>
+  </ol>
+</aside>
 
 </body>
 </html>
