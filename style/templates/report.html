@@ -1,0 +1,800 @@
+<!--
+================================================================
+DeepThink Style Kit — report.html
+AI Output StyleKit v1.0
+================================================================
+
+【AI 使用说明】
+
+这是 DeepThink 风格的 HTML 模板壳。
+CSS 已经全部写好，你只需要：
+
+1. 把 <title> 和 <h1> 改成实际标题
+2. 在 <main> 里，用下面的组件搭建内容
+3. 删除不需要的组件示例，保留用到的
+
+可用组件速查：
+  doc-header          页面头部卡片（标题 + 元信息）
+  toc                 目录（自动生成，无需手动维护）
+  section[id]         普通内容卡片（加 id 即自动进入目录）
+  block-green         绿色结论块（重点结论、正向信息）
+  block-amber         琥珀警示块（分歧、风险、不确定）
+  block-quote         引用批注块（旁注、方法论简介）
+  tag                 标签（tag-green / tag-amber / tag-blue / tag-gray）
+  stat-display        大数字展示（置信度、关键指标）
+  stat-bar            进度条
+  action-grid         行动/列表卡片组
+  table               信息表格（样式已内置）
+  doc-footer          页脚
+
+目录说明：
+  - 目录由 JS 自动生成，读取所有 section[id] 的第一个 h2 作为条目
+  - 只需给 section 加 id，目录自动同步，不需要手动维护任何链接
+  - 桌面端（>1280px）显示右侧浮动目录，移动端显示内联目录
+  - 不想要目录：删除 <aside id="toc-side"> 和 <nav id="toc-inline"> 即可
+
+原则：不需要把所有组件都用上。
+      结论用绿色，风险用琥珀，普通内容用 section + 正文，留白也是设计。
+
+================================================================
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文档标题</title>
+<style>
+  :root {
+    --bg:         #fbfbf8;
+    --paper:      #ffffff;
+    --paper-tint: #f7f6f0;
+    --line:       #deded6;
+    --line-soft:  #ecebe4;
+
+    --ink:        #161616;
+    --ink-soft:   #303030;
+    --ink-mid:    #656565;
+    --ink-muted:  #9a9a93;
+
+    --green:      #1f6f54;
+    --green-soft: #eef4ef;
+    --green-deep: #18352a;
+    --blue:       #275f8f;
+    --blue-soft:  #e8eff5;
+    --amber:      #9a5a12;
+    --amber-soft: #f7f4ed;
+    --gray-soft:  #f0efe9;
+
+    --shadow:      0 18px 55px rgba(25,30,28,.08);
+    --shadow-soft: 0 8px 32px rgba(25,30,28,.04);
+
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "HarmonyOS Sans SC",
+            "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", Roboto,
+            "Helvetica Neue", sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.78;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 24px 100px;
+  }
+
+  /* ── 排版基础 ── */
+  h1 {
+    margin: 0 0 16px;
+    font-size: 38px;
+    line-height: 1.2;
+    font-weight: 780;
+    letter-spacing: -.015em;
+    color: var(--ink);
+  }
+  h2 {
+    margin: 0 0 16px;
+    font-size: 24px;
+    line-height: 1.35;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    color: var(--ink);
+  }
+  h3 {
+    margin: 26px 0 8px;
+    font-size: 18px;
+    font-weight: 650;
+    color: var(--ink);
+  }
+  h4 {
+    margin: 20px 0 6px;
+    font-size: 15px;
+    font-weight: 650;
+    color: var(--ink-soft);
+  }
+  p { margin: 10px 0; color: var(--ink-soft); }
+  ul, ol { margin: 10px 0; padding-left: 22px; color: var(--ink-soft); }
+  li { margin: 6px 0; }
+  strong { color: var(--ink); font-weight: 650; }
+  em { font-style: italic; color: var(--ink-soft); }
+
+  a {
+    color: var(--blue);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(39,95,143,.25);
+    transition: border-color .15s;
+  }
+  a:hover { border-bottom-color: var(--blue); }
+
+  code {
+    background: var(--paper-tint);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: var(--mono);
+    font-size: 13.5px;
+    color: var(--ink);
+  }
+  pre {
+    background: var(--paper-tint);
+    padding: 18px 22px;
+    border-radius: 6px;
+    border: 1px solid var(--line-soft);
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: auto;
+    color: var(--ink-soft);
+  }
+  blockquote {
+    border-left: 2px solid var(--line);
+    margin: 14px 0;
+    padding: 2px 0 2px 16px;
+    color: var(--ink-mid);
+    font-style: italic;
+    font-size: 14.5px;
+  }
+
+  /* ── 头部卡片 ── */
+  header.doc-header {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 44px 46px;
+    box-shadow: var(--shadow);
+  }
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 14px;
+  }
+  .doc-meta {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .doc-meta .row { display: flex; gap: 8px; font-size: 14px; }
+  .doc-meta .key { color: var(--ink-muted); flex-shrink: 0; min-width: 60px; }
+  .doc-meta .val { color: var(--ink-soft); font-weight: 500; }
+
+  /* ── 普通内容卡片 ── */
+  section {
+    margin-top: 28px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 36px 40px;
+    box-shadow: var(--shadow-soft);
+  }
+
+  /* ── 绿色结论块 ── */
+  .block-green {
+    background: var(--green-soft);
+    border-left: 4px solid var(--green);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .block-green .block-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+  .block-green .block-text {
+    margin: 0;
+    font-size: 15.5px;
+    font-weight: 600;
+    color: var(--green-deep);
+    line-height: 1.65;
+  }
+  .block-green p { color: var(--ink-soft); font-size: 14.5px; margin: 6px 0; }
+  .block-green strong { color: var(--green-deep); }
+
+  /* 支持方法论 / 来源标注行 */
+  .block-green .block-support {
+    margin-top: 10px;
+    font-size: 12.5px;
+    color: var(--green);
+    font-weight: 600;
+  }
+  .block-green .block-support::before {
+    content: "支持来源 · ";
+    color: var(--ink-muted);
+    font-weight: 400;
+  }
+
+  /* ── 琥珀警示块 ── */
+  .block-amber {
+    background: var(--amber-soft);
+    border-left: 4px solid var(--amber);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .block-amber .block-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 8px;
+  }
+  .block-amber p { margin: 6px 0; font-size: 14.5px; color: #3e3124; }
+  .block-amber strong { color: var(--amber); }
+  .block-amber .pair { margin: 8px 0; font-size: 14.5px; color: #3e3124; }
+  .block-amber .pair strong { color: var(--amber); }
+  .block-amber .meta-label {
+    display: block;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--amber);
+    font-weight: 700;
+    margin: 12px 0 4px;
+  }
+
+  /* ── 深绿约束块（比 block-green 更强调） ── */
+  .block-dark {
+    background: var(--paper-tint);
+    border-left: 5px solid var(--green-deep);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .block-dark .block-label {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--green-deep);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .block-dark .block-label::before { content: "◆ "; }
+  .block-dark .block-text {
+    font-size: 18px;
+    font-weight: 650;
+    color: var(--ink);
+    line-height: 1.5;
+    margin: 0 0 12px;
+  }
+  .block-dark p { margin: 6px 0; font-size: 14.5px; color: var(--ink-soft); }
+
+  /* ── 引用批注块 ── */
+  .block-quote {
+    border-left: 3px solid var(--line);
+    background: var(--bg);
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    color: var(--ink-mid);
+    font-size: 14.5px;
+    font-style: italic;
+    line-height: 1.7;
+  }
+  .block-quote::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--green);
+    font-weight: 700;
+    font-style: normal;
+    margin-bottom: 6px;
+  }
+
+  /* ── 标签 ── */
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-family: var(--mono);
+    font-weight: 500;
+    vertical-align: middle;
+    margin: 0 2px;
+    white-space: nowrap;
+  }
+  .tag-green   { background: var(--green-soft);  color: var(--green); }
+  .tag-amber   { background: var(--amber-soft);  color: var(--amber); }
+  .tag-blue    { background: var(--blue-soft);   color: var(--blue);  }
+  .tag-gray    { background: var(--gray-soft);   color: var(--ink-mid); }
+
+  /* ── 大数字展示 ── */
+  .stat-display {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin: 18px 0 8px;
+  }
+  .stat-number {
+    font-family: var(--mono);
+    font-size: 44px;
+    font-weight: 800;
+    color: var(--green);
+    letter-spacing: -.02em;
+    line-height: 1;
+  }
+  .stat-number.amber { color: var(--amber); }
+  .stat-number.blue  { color: var(--blue);  }
+  .stat-label {
+    font-size: 15px;
+    color: var(--ink-mid);
+  }
+  .stat-bar {
+    height: 4px;
+    background: var(--line-soft);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .stat-bar-fill {
+    height: 100%;
+    background: var(--green);
+    border-radius: 2px;
+  }
+  .stat-bar-fill.amber { background: var(--amber); }
+
+  /* ── 行动卡片组 ── */
+  .action-grid {
+    display: grid;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .action-card {
+    background: var(--paper);
+    border: 1px solid var(--line-soft);
+    border-radius: 8px;
+    padding: 18px 22px;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .action-card:hover {
+    border-color: var(--green);
+    box-shadow: var(--shadow-soft);
+  }
+  .action-term {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--green);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .action-card ol, .action-card ul {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--ink-soft);
+    font-size: 14.5px;
+  }
+  .action-card li { margin: 5px 0; }
+
+  /* ── 表格 ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  th {
+    text-align: left;
+    padding: 10px 14px 10px 0;
+    border-bottom: 1.5px solid var(--line);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--ink-mid);
+  }
+  td {
+    padding: 12px 14px 12px 0;
+    border-bottom: 1px solid var(--line-soft);
+    vertical-align: top;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  tr:last-child td { border-bottom: none; }
+
+  /* ── 页脚 ── */
+  footer.doc-footer {
+    margin-top: 40px;
+    padding-top: 24px;
+    color: var(--ink-muted);
+    font-size: 13px;
+    text-align: center;
+  }
+  footer.doc-footer a {
+    color: var(--green);
+    border-bottom: none;
+    font-weight: 600;
+    transition: opacity .15s;
+  }
+  footer.doc-footer a:hover { opacity: .7; }
+
+  /* ── 目录：桌面侧边（fixed，>1280px） ── */
+  .toc-side {
+    position: fixed;
+    top: 36px;
+    right: 32px;
+    width: 200px;
+    max-height: calc(100vh - 72px);
+    overflow-y: auto;
+    padding: 18px 16px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: var(--shadow-soft);
+    font-size: 13px;
+    z-index: 20;
+    display: none; /* JS 生成条目后显示 */
+  }
+  .toc-side .toc-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    color: var(--ink-muted);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .toc-side ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: toc-side;
+  }
+  .toc-side li {
+    counter-increment: toc-side;
+    margin: 0;
+    padding: 0;
+  }
+  .toc-side li::before {
+    content: counter(toc-side, decimal-leading-zero);
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-muted);
+    margin-right: 7px;
+    font-weight: 500;
+  }
+  .toc-side a {
+    display: inline;
+    padding: 5px 0;
+    color: var(--ink-soft);
+    border-bottom: none;
+    line-height: 1.45;
+    transition: color .15s;
+  }
+  .toc-side a:hover { color: var(--green); }
+  .toc-side li.active a { color: var(--green); font-weight: 600; }
+
+  /* 目录：移动内联（≤1280px，插在 header 下方） */
+  .toc-inline {
+    display: none;
+    margin-top: 28px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 22px 28px;
+    box-shadow: var(--shadow-soft);
+  }
+  .toc-inline .toc-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    color: var(--ink-muted);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .toc-inline ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px 18px;
+    counter-reset: toc-inline;
+  }
+  .toc-inline li {
+    counter-increment: toc-inline;
+    padding: 8px 10px;
+    background: var(--bg);
+    border: 1px solid var(--line-soft);
+    border-radius: 6px;
+  }
+  .toc-inline li::before {
+    content: counter(toc-inline, decimal-leading-zero);
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-muted);
+    margin-right: 8px;
+    font-weight: 500;
+  }
+  .toc-inline a {
+    color: var(--ink-soft);
+    border-bottom: none;
+    font-size: 13px;
+    transition: color .15s;
+  }
+  .toc-inline a:hover { color: var(--green); }
+
+  /* ── 打印 ── */
+  @media print {
+    body { background: #fff; font-size: 12px; }
+    main { padding: 0; max-width: none; }
+    section, header.doc-header {
+      border: none; box-shadow: none;
+      padding: 16px 0; page-break-inside: avoid;
+    }
+    .toc-side, .toc-inline { display: none !important; }
+    a { color: var(--ink); text-decoration: none; }
+  }
+
+  /* ── 响应式 ── */
+  @media (min-width: 1281px) {
+    .toc-side   { display: block; }
+    .toc-inline { display: none !important; }
+  }
+  @media (max-width: 1280px) {
+    .toc-side   { display: none !important; }
+    .toc-inline { display: block; }
+  }
+  @media (max-width: 680px) {
+    main { padding: 24px 14px 64px; }
+    header.doc-header { padding: 28px 22px; }
+    section { padding: 24px 20px; }
+    h1 { font-size: 28px; }
+    h2 { font-size: 21px; }
+    .stat-number { font-size: 36px; }
+    .toc-inline ol { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 桌面侧边目录（JS 填充） -->
+<aside class="toc-side" id="toc-side">
+  <div class="toc-label">目录</div>
+  <ol id="toc-side-list"></ol>
+</aside>
+
+<main>
+
+  <!--
+  ================================================================
+  以下是组件示例区域。
+  使用时：删除不需要的组件，填入实际内容，删除注释说明即可。
+
+  目录说明：
+  - 目录由 JS 自动生成，读取所有 section[id] 的第一个 h2 作为条目
+  - 使用时只需给每个 section 加上 id 属性，目录自动同步
+  - 示例：<section id="background"><h2>背景</h2>…</section>
+  - 桌面端（>1280px）显示右侧浮动目录，移动端显示内联目录
+  ================================================================
+  -->
+
+
+  <!-- ① 页面头部卡片（标题 + 元信息） -->
+  <header class="doc-header">
+    <div class="eyebrow">文档来源 / 类型说明</div>
+    <h1>文档主标题</h1>
+    <!-- 可选：副标题或一句话摘要 -->
+    <!-- <p style="font-size:17px;color:var(--ink-mid);margin:8px 0 0;">副标题或摘要</p> -->
+    <div class="doc-meta">
+      <div class="row"><span class="key">日期</span><span class="val">2026-06-03</span></div>
+      <div class="row"><span class="key">来源</span><span class="val">Claude Sonnet 4.6</span></div>
+      <!-- 可按需增删 meta 行 -->
+    </div>
+  </header>
+
+  <!-- 移动内联目录（JS 填充，自动插在 header 后） -->
+  <nav class="toc-inline" id="toc-inline">
+    <div class="toc-label">目录</div>
+    <ol id="toc-inline-list"></ol>
+  </nav>
+
+
+  <!-- ② 普通内容卡片（最常用，每个章节用一个） -->
+  <section>
+    <h2>章节标题</h2>
+    <p>正文内容……</p>
+
+    <!-- 章节内可以嵌套任何组件 -->
+  </section>
+
+
+  <!-- ③ 绿色结论块（重点结论、正向信息） -->
+  <!--
+  <div class="block-green">
+    <div class="block-label">核心结论</div>
+    <p class="block-text">这里是最重要的结论一句话。</p>
+    <p>补充说明文字，可以有多段。</p>
+    <div class="block-support">方法论 A、方法论 B</div>
+  </div>
+  -->
+
+
+  <!-- ④ 琥珀警示块（分歧、风险、不确定） -->
+  <!--
+  <div class="block-amber">
+    <div class="block-label">⚠ 注意 / 分歧</div>
+    <p>警示或分歧内容……</p>
+    <span class="meta-label">原因</span>
+    <p>分歧或风险的原因……</p>
+  </div>
+  -->
+
+
+  <!-- ⑤ 深绿约束块（最关键约束、不可忽视的限制） -->
+  <!--
+  <div class="block-dark">
+    <div class="block-label">主导约束</div>
+    <div class="block-text">这里是最硬的约束一句话。</div>
+    <p><strong>为什么：</strong>……</p>
+  </div>
+  -->
+
+
+  <!-- ⑥ 引用批注块（旁注、方法论说明、引用来源） -->
+  <!--
+  <div class="block-quote" data-label="方法论简介">
+    批注文字……
+  </div>
+  -->
+
+
+  <!-- ⑦ 标签示例 -->
+  <!--
+  <p>
+    状态：<span class="tag tag-green">已确认</span>
+    <span class="tag tag-amber">待验证</span>
+    <span class="tag tag-gray">AI推断</span>
+    <span class="tag tag-blue">来源</span>
+  </p>
+  -->
+
+
+  <!-- ⑧ 大数字 + 进度条（置信度、关键指标） -->
+  <!--
+  <div class="stat-display">
+    <span class="stat-number">75%</span>
+    <span class="stat-label">置信度 · 中高</span>
+  </div>
+  <div class="stat-bar">
+    <div class="stat-bar-fill" style="width: 75%"></div>
+  </div>
+  -->
+
+
+  <!-- ⑨ 行动卡片组（行动建议、步骤、阶段） -->
+  <!--
+  <div class="action-grid">
+    <div class="action-card">
+      <div class="action-term">短期 · 立即可做</div>
+      <ol>
+        <li>行动一</li>
+        <li>行动二</li>
+      </ol>
+    </div>
+    <div class="action-card">
+      <div class="action-term">中期 · 1–6 个月</div>
+      <ol><li>行动……</li></ol>
+    </div>
+    <div class="action-card">
+      <div class="action-term">长期 · 策略层</div>
+      <ol><li>行动……</li></ol>
+    </div>
+  </div>
+  -->
+
+
+  <!-- ⑩ 表格（数据、对比、来源清单） -->
+  <!--
+  <table>
+    <thead>
+      <tr><th>项目</th><th>内容</th><th>来源</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>条目一</td>
+        <td>说明</td>
+        <td><span class="tag tag-gray">AI记忆</span></td>
+      </tr>
+    </tbody>
+  </table>
+  -->
+
+
+  <!-- 页脚 -->
+  <footer class="doc-footer">
+    DeepThink Style Kit · AI Output StyleKit
+  </footer>
+
+</main>
+
+<script>
+  // 自动目录：读取所有 section[id]，取第一个 h2 作为条目
+  (function () {
+    var sections = document.querySelectorAll('section[id]');
+    if (sections.length === 0) return;
+
+    var sideList   = document.getElementById('toc-side-list');
+    var inlineList = document.getElementById('toc-inline-list');
+
+    sections.forEach(function (sec) {
+      var h2 = sec.querySelector('h2');
+      if (!h2) return;
+      var text = h2.textContent.trim();
+      var id   = sec.id;
+
+      [sideList, inlineList].forEach(function (list) {
+        var li = document.createElement('li');
+        var a  = document.createElement('a');
+        a.href        = '#' + id;
+        a.textContent = text;
+        li.appendChild(a);
+        list.appendChild(li);
+      });
+    });
+
+    // 滚动高亮当前章节（侧边目录）
+    var sideItems = sideList ? sideList.querySelectorAll('li') : [];
+    function onScroll() {
+      var scrollY = window.scrollY + 80;
+      var current = 0;
+      sections.forEach(function (sec, i) {
+        if (sec.offsetTop <= scrollY) current = i;
+      });
+      sideItems.forEach(function (li, i) {
+        li.classList.toggle('active', i === current);
+      });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // section 加 scroll-margin
+    sections.forEach(function (sec) {
+      sec.style.scrollMarginTop = '32px';
+    });
+  })();
+</script>
+</body>
+</html>
